@@ -12,6 +12,9 @@ import com.example.best_recipes.databinding.FragmentFirstBinding
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+/** hello it's me
+ * 
+ */
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
