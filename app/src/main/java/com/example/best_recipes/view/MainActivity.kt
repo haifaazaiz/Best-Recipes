@@ -1,4 +1,4 @@
-package com.example.best_recipes
+package com.example.best_recipes.view
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.example.best_recipes.R
 import com.example.best_recipes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
