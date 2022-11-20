@@ -1,4 +1,4 @@
-package com.example.best_recipes.view
+package com.example.best_recipes.controller
 
 import android.content.Intent
 import android.os.Bundle

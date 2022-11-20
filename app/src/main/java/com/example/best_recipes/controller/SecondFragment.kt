@@ -1,4 +1,4 @@
-package com.example.best_recipes.view
+package com.example.best_recipes.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
