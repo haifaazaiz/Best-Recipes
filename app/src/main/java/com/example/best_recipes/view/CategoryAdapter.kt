@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.best_recipes.Model.Category
+import com.example.best_recipes.model.Category
 import com.example.best_recipes.R
 import java.util.concurrent.Executors
 
