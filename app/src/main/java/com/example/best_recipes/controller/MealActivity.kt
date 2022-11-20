@@ -1,5 +1,4 @@
 package com.example.best_recipes.controller
-
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.R
 import com.example.best_recipes.model.MealRepository
+import com.example.best_recipes.view.MealsAdapter
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException

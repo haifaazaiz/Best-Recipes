@@ -1,4 +1,4 @@
-package com.example.best_recipes.controller
+package com.example.best_recipes.view
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
