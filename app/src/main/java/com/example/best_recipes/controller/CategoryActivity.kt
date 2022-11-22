@@ -1,13 +1,15 @@
 package com.example.best_recipes.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.best_recipes.model.CategoryRepository
+import com.example.best_recipes.modal.CategoryRepository
 import com.example.best_recipes.R
 import com.example.best_recipes.view.CategoryAdapter
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -29,12 +31,14 @@ class CategoryActivity : AppCompatActivity() {
 
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var circularProgressIndicator: CircularProgressIndicator
+    //private lateinit var categoroItem : LinearLayoutCompat
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_category)
 
+        setContentView(R.layout.activity_category)
+        //categoroItem= findViewById(R.id.category_item)
         recyclerView = findViewById(R.id.category_recycler_view)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
@@ -59,9 +63,11 @@ class CategoryActivity : AppCompatActivity() {
                     val categories = gson.fromJson(it, CategoryRepository::class.java)
                     categories.categories?.let { it1 ->
                         runOnUiThread {
+                            val intent = Intent(applicationContext, MealActivity::class.java)
                             categoryAdapter = CategoryAdapter(it1)
                             recyclerView.adapter = categoryAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+
                         }
 
                     }

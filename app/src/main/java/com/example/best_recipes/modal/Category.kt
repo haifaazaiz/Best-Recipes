@@ -1,4 +1,4 @@
-package com.example.best_recipes.model
+package com.example.best_recipes.modal
 import com.google.gson.annotations.SerializedName
 class Category {
 

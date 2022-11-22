@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Best_recipes"
         tools:targetApi="31">
         <activity
+            android:name=".controller.MealActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.CategoryActivity"
             android:exported="true"
             android:label="@string/app_name"

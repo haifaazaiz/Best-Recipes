@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.R
-import com.example.best_recipes.model.MealRepository
+import com.example.best_recipes.modal.MealRepository
 import com.example.best_recipes.view.MealsAdapter
 import com.google.gson.Gson
 import okhttp3.*
