@@ -23,7 +23,7 @@ class MealActivity : AppCompatActivity(){
 
         recyclerView = findViewById(R.id.recycler_view)
 
-        val url = URL("https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood")
+        val url = URL("https://www.themealdb.com/api/json/v1/1/filter.php?c="+intent.getStringExtra("CategoryName"))
 
         val request = Request.Builder()
             .url(url)
