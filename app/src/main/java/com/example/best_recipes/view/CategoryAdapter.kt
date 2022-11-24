@@ -32,7 +32,7 @@ class CategoryAdapter(val categories: List<Category>): RecyclerView.Adapter<Cate
 
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        categories.get(position).urlPictureCategory?.let { ImageProvider.imageHolder(null,holder, it) }
+        categories.get(position).urlPictureCategory?.let { ImageProvider.imageHolder(holder.imageView, it) }
         holder.categoryTextView.setText(categories.get(position).nameCategory)
         holder.categoryItem.setOnClickListener{
                         Log.d("click on", "clicked")
@@ -40,9 +40,6 @@ class CategoryAdapter(val categories: List<Category>): RecyclerView.Adapter<Cate
                         intent.putExtra("CategoryName", categories.get(position).nameCategory)
                         var context = holder.categoryView.context
                         context.startActivity(intent)
-
-
-
         }
         }
 

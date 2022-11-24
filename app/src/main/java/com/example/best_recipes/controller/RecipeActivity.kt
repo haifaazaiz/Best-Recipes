@@ -1,88 +1,24 @@
 package com.example.best_recipes.controller
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.best_recipes.R
 import com.example.best_recipes.modal.Recipe
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.example.best_recipes.modal.RecipeJson
+import com.example.best_recipes.view.ImageProvider
 import com.google.gson.Gson
-import com.google.gson.JsonElement
-import com.google.gson.JsonParser
 import okhttp3.*
 import java.io.IOException
 import java.net.URL
-data class C(
-    var idMeal: Int?= null,
-   //@SerializedName("strMeal")
-   var strMeal: String? = null,
-//@SerializedName("strDrinkAlternate")
-var strDrinkAlternate: String? = null,
-//@SerializedName("strCategory")
-var strCategory: String? = null,
-//@SerializedName("strArea")
-var strArea: String? = null,
-//@SerializedName("strInstructions")
-var strInstructions: String? = null,
-   //@SerializedName("strMealThumb")
-   var strMealThumb: String? = null,
-   //@SerializedName("strYoutube")
-   var strYoutube: String? = null,
-   //@SerializedName("strTags")
-   var strTags: String? = null,
-   var strIngredient1: String? = null,
-   var strIngredient2: String? = null,
-   var strIngredient3: String? = null,
-   var strIngredient4: String? = null,
-   var strIngredient5: String? = null,
-   var strIngredient6: String? = null,
-   var strIngredient7: String? = null,
-   var strIngredient8: String? = null,
-   var strIngredient9: String? = null,
-   var strIngredient10: String? = null,
-   var strIngredient11: String? = null,
-   var strIngredient12: String? = null,
-   var strIngredient13: String? = null,
-   var strIngredient14: String? = null,
-   var strIngredient15: String? = null,
-   var strIngredient16: String? = null,
-   var strIngredient17: String? = null,
-   var strIngredient18: String? = null,
-   var strIngredient19: String? = null,
-   var strIngredient20: String? = null,
-   var strMeasure1: String? = null,
-   var strMeasure2: String? = null,
-   var strMeasure3: String? = null,
-   var strMeasure4: String? = null,
-   var strMeasure5: String? = null,
-   var strMeasure6: String? = null,
-   var strMeasure7: String? = null,
-   var strMeasure8: String? = null,
-   var strMeasure9: String? = null,
-   var strMeasure10: String? = null,
-   var strMeasure11: String? = null,
-   var strMeasure12: String? = null,
-   var strMeasure13: String? = null,
-   var strMeasure14: String? = null,
-   var strMeasure15: String? = null,
-   var strMeasure16: String? = null,
-   var strMeasure17: String? = null,
-   var strMeasure18: String? = null,
-   var strMeasure19: String? = null,
-   var strMeasure20: String? = null,
 
-  var strSource: String? = null,
-  var strImageSource: String? = null,
-  var strCreativeCommonsConfirmed: String? = null,
-  var dateModified: String? = null
-)
 class RecipeActivity : AppCompatActivity(){
     private lateinit var ingredient_textview : TextView
     private lateinit var tags_textview : TextView
     private lateinit var  instruction_textview : TextView
-
+    private lateinit var  image_view : ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
@@ -90,8 +26,9 @@ class RecipeActivity : AppCompatActivity(){
         ingredient_textview = findViewById(R.id.ingredient_textview)
         tags_textview = findViewById(R.id.tags_textview)
         instruction_textview = findViewById(R.id.instruction_textview)
-        val url = URL("https://www.themealdb.com/api/json/v1/1/lookup.php?i=52819")
-
+        image_view = findViewById(R.id.imagerecipe)
+        val url = URL("https://www.themealdb.com/api/json/v1/1/lookup.php?i="+intent.getStringExtra("mealId"))
+        Log.d("url", url.toString())
         val request = Request.Builder()
             .url(url)
             .build()
@@ -107,15 +44,55 @@ class RecipeActivity : AppCompatActivity(){
             override fun onResponse(call: Call, response: Response) {
                 response.body?.string()?.let {
                     val gson = Gson()
-                    val recipeResponse = gson.fromJson(it, Recipe::class.java)
+                    var ingredients = ""
+                    val recipeResponse = gson.fromJson(it, RecipeJson::class.java)
                     runOnUiThread {
                         var recipeJson = recipeResponse.meals?.get(0)
-                        //val mapper = jacksonObjectMapper()
-                        //val c:C = mapper.readValue(recipe,object: TypeReference<C>)
-                        var recipe = gson.fromJson(recipeJson, C::class.java)
-                        ingredient_textview.text = recipe.strIngredient1 + recipe.strIngredient2
-                        tags_textview.text = recipe.strTags
+                        var recipe = gson.fromJson(recipeJson, Recipe::class.java)
+                        if(recipe.strIngredient1!="")
+                            ingredients = ingredients + recipe.strIngredient1 + "  :  " + recipe.strMeasure1 +"\n"
+                        if(recipe.strIngredient2!="")
+                            ingredients = ingredients + recipe.strIngredient2 + "  :  " + recipe.strMeasure2 +"\n"
+                        if(recipe.strIngredient3!="")
+                            ingredients = ingredients + recipe.strIngredient3 + "  :  " + recipe.strMeasure3 +"\n"
+                        if(recipe.strIngredient4!="")
+                            ingredients = ingredients + recipe.strIngredient4 + "  :  " + recipe.strMeasure4 +"\n"
+                        if(recipe.strIngredient5!="")
+                            ingredients = ingredients + recipe.strIngredient5 + ":" + recipe.strMeasure5 +"\n"
+                        if(recipe.strIngredient6!="")
+                            ingredients = ingredients + recipe.strIngredient6 + "  :  " + recipe.strMeasure6 +"\n"
+                        if(recipe.strIngredient7!="")
+                            ingredients = ingredients + recipe.strIngredient7 + "  :  " + recipe.strMeasure7 +"\n"
+                        if(recipe.strIngredient8!="")
+                            ingredients = ingredients + recipe.strIngredient8 + "  :  " + recipe.strMeasure8 +"\n"
+                        if(recipe.strIngredient9!="")
+                            ingredients = ingredients + recipe.strIngredient9 + "  :  " + recipe.strMeasure9 +"\n"
+                        if(recipe.strIngredient10!="")
+                            ingredients = ingredients + recipe.strIngredient10 + ":" + recipe.strMeasure10 +"\n"
+                        if(recipe.strIngredient11!="")
+                            ingredients = ingredients + recipe.strIngredient11 + "  :  " + recipe.strMeasure11 +"\n"
+                        if(recipe.strIngredient12!="")
+                            ingredients = ingredients + recipe.strIngredient12 + "  :  " + recipe.strMeasure12 +"\n"
+                        if(recipe.strIngredient13!="")
+                            ingredients = ingredients + recipe.strIngredient13 + "  :  " + recipe.strMeasure13 +"\n"
+                        if(recipe.strIngredient14!="")
+                            ingredients = ingredients + recipe.strIngredient14 + "  :  " + recipe.strMeasure14 +"\n"
+                        if(recipe.strIngredient15!="")
+                            ingredients = ingredients + recipe.strIngredient15 + ":" + recipe.strMeasure15 +"\n"
+                        if(recipe.strIngredient16!="")
+                            ingredients = ingredients + recipe.strIngredient16 + ":" + recipe.strMeasure16 +"\n"
+                        if(recipe.strIngredient17!="")
+                            ingredients = ingredients + recipe.strIngredient17 + "  :  " + recipe.strMeasure17 +"\n"
+                        if(recipe.strIngredient18!="")
+                            ingredients = ingredients + recipe.strIngredient18 + "  :  " + recipe.strMeasure18 +"\n"
+                        if(recipe.strIngredient19!="")
+                            ingredients = ingredients + recipe.strIngredient19 + "  :  " + recipe.strMeasure19 +"\n"
+                        if(recipe.strIngredient20!="")
+                            ingredients = ingredients + recipe.strIngredient20 + "  :  " + recipe.strMeasure20 +"\n"
+                        ingredient_textview.text = ingredients
+                        tags_textview.text = recipe.strTags + "\n"
                         instruction_textview.text = recipe.strInstructions
+                        recipe. strMealThumb?.let { ImageProvider.imageHolder(image_view, it) }
                         Log.d("OKHTTP", "Got " + recipe.idMeal)
                     }
                 }

@@ -4,13 +4,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.Executors
 
 class ImageProvider {
 
     companion object {
-        fun imageHolder(Mholder: MealViewHolder?,Cholder: CategoryViewHolder?, imageURL: String)
+        fun imageHolder(imageView: ImageView, imageURL: String)
         {
             //var holder: RecyclerView.ViewHolder? =null
 
@@ -33,12 +34,7 @@ class ImageProvider {
 
                     // Only for making changes in UI
                     handler.post {
-                        if(Mholder!=null) {
-                            Mholder.imageView.setImageBitmap(image)
-                        }
-                        if(Cholder!=null) {
-                            Cholder.imageView.setImageBitmap(image)
-                        }
+                        imageView.setImageBitmap(image)
                     }
                 }
 
