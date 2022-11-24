@@ -18,7 +18,7 @@
             android:name=".controller.MealActivity"
             android:exported="false" />
         <activity
-            android:name=".controller.CategoryActivity"
+            android:name=".controller.RecipeActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Best_recipes.NoActionBar">

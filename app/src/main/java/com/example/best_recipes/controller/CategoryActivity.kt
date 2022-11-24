@@ -21,18 +21,12 @@ import java.net.URL
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-/** hello it's me
- * 
- */
 class CategoryActivity : AppCompatActivity() {
 
 
     private lateinit var recyclerView: RecyclerView
-
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var circularProgressIndicator: CircularProgressIndicator
-    //private lateinit var categoroItem : LinearLayoutCompat
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
