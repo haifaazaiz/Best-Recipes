@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.modal.CategoryRepository
 import com.example.best_recipes.R
 import com.example.best_recipes.view.CategoryAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -30,7 +34,7 @@ class CategoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        supportActionBar?.setTitle("Catégories")
         setContentView(R.layout.activity_category)
         //categoroItem= findViewById(R.id.category_item)
         recyclerView = findViewById(R.id.category_recycler_view)
@@ -44,14 +48,26 @@ class CategoryActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
 
+
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                circularProgressIndicator.visibility = View.GONE
-                Log.e("OKHTTP failure", e.localizedMessage)
+                Log.e("OKHTTP failurrrrrre", e.localizedMessage)
+                runOnUiThread {
+                    circularProgressIndicator.visibility = View.GONE
+                    MaterialAlertDialogBuilder(this@CategoryActivity)
+                        .setTitle("Pas de réponse")
+                        .setMessage("Vérifier votre connexion internet")
+                        .setNeutralButton("OK") { dialog, which ->
+                            val intent = Intent(this@CategoryActivity, CategoryActivity::class.java)
+                            startActivity(intent)
+                        }
+                        .show()
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
+
                 response.body?.string()?.let {
                     val gson = Gson()
                     val categories = gson.fromJson(it, CategoryRepository::class.java)
@@ -61,7 +77,7 @@ class CategoryActivity : AppCompatActivity() {
                             categoryAdapter = CategoryAdapter(it1)
                             recyclerView.adapter = categoryAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
-
+                            circularProgressIndicator.visibility = View.GONE
                         }
 
                     }
@@ -69,8 +85,10 @@ class CategoryActivity : AppCompatActivity() {
                     Log.d("OKHTTP", "Got " + categories.categories?.count() + " results")
                 }
             }
+
         })
-        circularProgressIndicator.visibility = View.GONE
+
+
 
 
     }

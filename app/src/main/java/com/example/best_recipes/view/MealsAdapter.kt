@@ -35,6 +35,7 @@ class MealsAdapter(val meals: List<Meal>) : RecyclerView.Adapter<MealViewHolder>
             Log.d("click on", "clicked")
             val intent = Intent(holder.mealView.context, RecipeActivity::class.java)
             intent.putExtra("mealId", meals.get(position).idMeal.toString())
+            intent.putExtra("recipeName",meals.get(position).mealName.toString())
             Log.d("idmeal", meals.get(position).idMeal.toString())
             var context = holder.mealView.context
             context.startActivity(intent)

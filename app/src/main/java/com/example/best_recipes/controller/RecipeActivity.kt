@@ -1,7 +1,9 @@
 package com.example.best_recipes.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +11,8 @@ import com.example.best_recipes.R
 import com.example.best_recipes.modal.Recipe
 import com.example.best_recipes.modal.RecipeJson
 import com.example.best_recipes.view.ImageProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -19,14 +23,18 @@ class RecipeActivity : AppCompatActivity(){
     private lateinit var tags_textview : TextView
     private lateinit var  instruction_textview : TextView
     private lateinit var  image_view : ImageView
+    private lateinit var circularProgressIndicator: CircularProgressIndicator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
-
+        supportActionBar?.setTitle(intent.getStringExtra("recipeName"))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ingredient_textview = findViewById(R.id.ingredient_textview)
         tags_textview = findViewById(R.id.tags_textview)
         instruction_textview = findViewById(R.id.instruction_textview)
         image_view = findViewById(R.id.imagerecipe)
+        circularProgressIndicator= findViewById(R.id.progress_circulair)
+        circularProgressIndicator.visibility= View.VISIBLE
         val url = URL("https://www.themealdb.com/api/json/v1/1/lookup.php?i="+intent.getStringExtra("mealId"))
         Log.d("url", url.toString())
         val request = Request.Builder()
@@ -39,6 +47,16 @@ class RecipeActivity : AppCompatActivity(){
 
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("OKHTTP", e.localizedMessage)
+                runOnUiThread {
+                    circularProgressIndicator.visibility = View.GONE
+                    MaterialAlertDialogBuilder(this@RecipeActivity)
+                        .setTitle("Pas de réponse")
+                        .setMessage("Vérifier votre connexion internet")
+                        .setNeutralButton("OK") { dialog, which ->
+                            val intent = Intent(this@RecipeActivity, CategoryActivity::class.java)
+                            startActivity(intent)                        }
+                        .show()
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -47,8 +65,10 @@ class RecipeActivity : AppCompatActivity(){
                     var ingredients = ""
                     val recipeResponse = gson.fromJson(it, RecipeJson::class.java)
                     runOnUiThread {
+                        circularProgressIndicator.visibility = View.GONE
                         var recipeJson = recipeResponse.meals?.get(0)
                         var recipe = gson.fromJson(recipeJson, Recipe::class.java)
+
                         if(recipe.strIngredient1!="")
                             ingredients = ingredients + recipe.strIngredient1 + "  :  " + recipe.strMeasure1 +"\n"
                         if(recipe.strIngredient2!="")
