@@ -19,6 +19,7 @@ class MealViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var nameTextView: TextView = itemView.findViewById(R.id.textview_name)
     var imageView : ImageView = itemView.findViewById(R.id.imageView)
     var mealItem : LinearLayoutCompat = itemView.findViewById(R.id.mealItem)
+    var mealView:View = itemView
 }
 
 class MealsAdapter(val meals: List<Meal>) : RecyclerView.Adapter<MealViewHolder>(){
@@ -32,10 +33,10 @@ class MealsAdapter(val meals: List<Meal>) : RecyclerView.Adapter<MealViewHolder>
         holder.nameTextView.setText(meals.get(position).mealName)
         holder.mealItem.setOnClickListener{
             Log.d("click on", "clicked")
-            val intent = Intent(holder.mealItem.context, RecipeActivity::class.java)
-            intent.putExtra("mealId", meals.get(position).idMeal)
+            val intent = Intent(holder.mealView.context, RecipeActivity::class.java)
+            intent.putExtra("mealId", meals.get(position).idMeal.toString())
             Log.d("idmeal", meals.get(position).idMeal.toString())
-            var context = holder.mealItem.context
+            var context = holder.mealView.context
             context.startActivity(intent)
         }
     }
