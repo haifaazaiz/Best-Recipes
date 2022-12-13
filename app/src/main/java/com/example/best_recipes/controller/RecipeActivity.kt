@@ -22,6 +22,7 @@ class RecipeActivity : AppCompatActivity(){
     private lateinit var ingredient_textview : TextView
     private lateinit var tags_textview : TextView
     private lateinit var  instruction_textview : TextView
+    private lateinit var  lienYoutube_textview : TextView
     private lateinit var  image_view : ImageView
     private lateinit var circularProgressIndicator: CircularProgressIndicator
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class RecipeActivity : AppCompatActivity(){
         ingredient_textview = findViewById(R.id.ingredient_textview)
         tags_textview = findViewById(R.id.tags_textview)
         instruction_textview = findViewById(R.id.instruction_textview)
+        lienYoutube_textview = findViewById(R.id.lienYoutube_textview)
         image_view = findViewById(R.id.imagerecipe)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
@@ -114,7 +116,9 @@ class RecipeActivity : AppCompatActivity(){
                             ingredients = ingredients + recipe.strIngredient20 + "  :  " + recipe.strMeasure20 +"\n"
                         ingredient_textview.text = ingredients
                         tags_textview.text = recipe.strTags + "\n"
-                        instruction_textview.text = recipe.strInstructions
+                        instruction_textview.text = recipe.strInstructions + "\n"
+                        if(recipe.strYoutube!="")
+                            lienYoutube_textview.text = recipe.strYoutube
                         recipe. strMealThumb?.let { ImageProvider.imageHolder(image_view, it) }
                         Log.d("OKHTTP", "Got " + recipe.idMeal)
                     }
