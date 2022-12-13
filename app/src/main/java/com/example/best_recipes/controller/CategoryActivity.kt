@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.modal.CategoryRepository
@@ -42,6 +43,9 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
         //categoroItem= findViewById(R.id.category_item)
         recyclerView = findViewById(R.id.category_recycler_view)
+        var itemDecoration = DividerItemDecoration(this@CategoryActivity, DividerItemDecoration.VERTICAL)
+        itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
+        recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
         val url = URL("https://www.themealdb.com/api/json/v1/1/categories.php")

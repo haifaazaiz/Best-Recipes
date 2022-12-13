@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.R
@@ -27,6 +28,9 @@ class MealActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(intent.getStringExtra("CategoryName"))
         recyclerView = findViewById(R.id.recycler_view)
+        var itemDecoration = DividerItemDecoration(this@MealActivity, DividerItemDecoration.VERTICAL)
+        itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
+        recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
 
