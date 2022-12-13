@@ -1,10 +1,14 @@
 package com.example.best_recipes.controller
 
+import android.app.DownloadManager.Query
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -52,7 +56,7 @@ class CategoryActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("OKHTTP failurrrrrre", e.localizedMessage)
+                Log.e("OKHTTP failure", e.localizedMessage)
                 runOnUiThread {
                     circularProgressIndicator.visibility = View.GONE
                     MaterialAlertDialogBuilder(this@CategoryActivity)
@@ -78,8 +82,8 @@ class CategoryActivity : AppCompatActivity() {
                             recyclerView.adapter = categoryAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                             circularProgressIndicator.visibility = View.GONE
-                        }
 
+                        }
                     }
 
                     Log.d("OKHTTP", "Got " + categories.categories?.count() + " results")
@@ -90,7 +94,25 @@ class CategoryActivity : AppCompatActivity() {
 
 
 
-
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        val search : MenuItem? = menu?.findItem(R.id.nav_search)
+        val searchView : SearchView = search?.actionView as SearchView
+        searchView.queryHint ="Search somthing!"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?):Boolean{
+                return false
+            }
+            override fun onQueryTextChange(query: String):Boolean{
+               categoryAdapter.filter?.filter(query)
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
 
 }
