@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Filter
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.modal.CategoryRepository
 import com.example.best_recipes.R
+import com.example.best_recipes.modal.Category
 import com.example.best_recipes.view.CategoryAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -26,6 +28,8 @@ import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
 import java.net.URL
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -36,9 +40,13 @@ class CategoryActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var circularProgressIndicator: CircularProgressIndicator
+    private lateinit var tempList : ArrayList<Category>
+    private lateinit var list : ArrayList<Category>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tempList = ArrayList()
+        list = ArrayList()
         supportActionBar?.setTitle("Catégories")
         setContentView(R.layout.activity_category)
         //categoroItem= findViewById(R.id.category_item)
@@ -79,6 +87,8 @@ class CategoryActivity : AppCompatActivity() {
                 response.body?.string()?.let {
                     val gson = Gson()
                     val categories = gson.fromJson(it, CategoryRepository::class.java)
+                    categories.categories?.let { it1 -> tempList.addAll(it1) }
+                    categories.categories?.let { it1 -> list.addAll(it1) }
                     categories.categories?.let { it1 ->
                         runOnUiThread {
                             val intent = Intent(applicationContext, MealActivity::class.java)
@@ -110,13 +120,30 @@ class CategoryActivity : AppCompatActivity() {
                 return false
             }
             override fun onQueryTextChange(query: String):Boolean{
-               categoryAdapter.filter?.filter(query)
-                return true
-            }
-        })
+                tempList.clear()
+                if (query == null || query.isEmpty()) {
+                    tempList.addAll(list )
 
+                } else {
+                    val filterPattern =
+                        query.toString().toLowerCase(Locale.ITALIAN).trim { it <= ' ' }
+                    for (item in list) {
+                        if (item.nameCategory?.toLowerCase(Locale.ITALIAN)?.contains(filterPattern) == true) {
+                            tempList.add(item)
+                        }
+                    }
+                }
+                tempList?.let { it1 ->
+                    runOnUiThread {
+                        categoryAdapter = CategoryAdapter(it1)
+                        recyclerView.adapter = categoryAdapter
+                        recyclerView.layoutManager = LinearLayoutManager(applicationContext)
+
+                    }
+                }
+            return true
+        }
+    })
         return super.onCreateOptionsMenu(menu)
-    }
-
-
+}
 }
