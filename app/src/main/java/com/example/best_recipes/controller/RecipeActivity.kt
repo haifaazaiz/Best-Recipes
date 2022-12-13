@@ -53,8 +53,11 @@ class RecipeActivity : AppCompatActivity(){
                         .setTitle("Pas de réponse")
                         .setMessage("Vérifier votre connexion internet")
                         .setNeutralButton("OK") { dialog, which ->
-                            val intent = Intent(this@RecipeActivity, CategoryActivity::class.java)
-                            startActivity(intent)                        }
+                            val newIntent = Intent(this@RecipeActivity, RecipeActivity::class.java)
+                            newIntent.putExtra("mealId", intent.getStringExtra("mealId"))
+                            newIntent.putExtra("recipeName",intent.getStringExtra("recipeName"))
+
+                            startActivity(newIntent)                        }
                         .show()
                 }
             }

@@ -48,8 +48,10 @@ class MealActivity : AppCompatActivity(){
                         .setTitle("Pas de réponse")
                         .setMessage("Vérifier votre connexion internet")
                         .setNeutralButton("OK") { dialog, which ->
-                            val intent = Intent(this@MealActivity, CategoryActivity::class.java)
-                            startActivity(intent)
+                            val newIntent = Intent(this@MealActivity, MealActivity::class.java)
+                            newIntent.putExtra("CategoryName",intent.getStringExtra("CategoryName"))
+
+                            startActivity(newIntent)
                         }
                         .show()
                 }
