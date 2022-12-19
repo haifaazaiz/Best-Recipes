@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ class IngredientViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) 
     var ingredientTextView: TextView = itemView.findViewById(R.id.ingredient_textview)
     var ingredientItem: LinearLayoutCompat =itemView.findViewById(R.id.ingredient_item)
     var ingredientView: View = itemView
+    var imageView : ImageView = itemView.findViewById(R.id.imageView)
 }
 
 class IngredientAdapter(val ingredients: ArrayList<Ingredient>): RecyclerView.Adapter<IngredientViewHolder>() {
@@ -33,8 +35,11 @@ class IngredientAdapter(val ingredients: ArrayList<Ingredient>): RecyclerView.Ad
 
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
-
         holder.ingredientTextView.setText(ingredients.get(position).strIngredient)
+        val urlImage = "https://www.themealdb.com/images/ingredients/"+ingredients.get(position).strIngredient+".png"
+        ImageProvider.imageHolder(
+            holder.imageView, urlImage
+        )
         holder.ingredientItem.setOnClickListener {
             Log.d("click on", "clicked")
             val intent = Intent(holder.ingredientView.context, MealActivity::class.java)
@@ -42,6 +47,7 @@ class IngredientAdapter(val ingredients: ArrayList<Ingredient>): RecyclerView.Ad
             var context = holder.ingredientView.context
             context.startActivity(intent)
         }
+
     }
 
 

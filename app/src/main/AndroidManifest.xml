@@ -23,6 +23,7 @@
             android:name=".controller.RandomRecipeActivity"
             android:exported="false"
             android:parentActivityName=".controller.CategoryActivity"/>
+
         <activity
             android:name=".controller.IngredientsActivity"
             android:exported="false"
@@ -32,10 +33,12 @@
             android:name=".controller.RecipeActivity"
             android:exported="false"
             android:parentActivityName=".controller.CategoryActivity" />
+
         <activity
             android:name=".controller.MealActivity"
             android:exported="false"
             android:parentActivityName=".controller.CategoryActivity" />
+
         <activity
             android:name=".controller.CategoryActivity"
             android:exported="true">
