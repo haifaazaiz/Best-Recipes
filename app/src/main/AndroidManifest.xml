@@ -26,8 +26,7 @@
 
         <activity
             android:name=".controller.IngredientsActivity"
-            android:exported="false"
-            android:parentActivityName=".controller.CategoryActivity"/>
+            android:exported="false" />
 
         <activity
             android:name=".controller.RecipeActivity"

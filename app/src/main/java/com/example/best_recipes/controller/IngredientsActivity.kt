@@ -40,7 +40,6 @@ class IngredientsActivity : AppCompatActivity() {
         tempList = ArrayList()
         list = ArrayList()
         setContentView(R.layout.activity_ingredient)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Ingrédients")
         recyclerView = findViewById(R.id.ingredient_recycler_view)
         var itemDecoration = DividerItemDecoration(this@IngredientsActivity, DividerItemDecoration.VERTICAL)
