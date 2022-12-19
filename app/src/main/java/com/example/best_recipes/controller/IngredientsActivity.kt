@@ -1,4 +1,5 @@
 package com.example.best_recipes.controller
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.R
-import com.example.best_recipes.modal.Category
-import com.example.best_recipes.modal.Meal
-import com.example.best_recipes.modal.MealRepository
+import com.example.best_recipes.modal.*
 import com.example.best_recipes.view.BottomNav
-import com.example.best_recipes.view.CategoryAdapter
-import com.example.best_recipes.view.MealsAdapter
+import com.example.best_recipes.view.IngredientAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -27,30 +25,34 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MealActivity : AppCompatActivity(){
+class IngredientsActivity : AppCompatActivity() {
+
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mealsAdapter: MealsAdapter
+    private lateinit var ingredientAdapter: IngredientAdapter
     private lateinit var circularProgressIndicator: CircularProgressIndicator
-    private lateinit var tempList : ArrayList<Meal>
-    private lateinit var list : ArrayList<Meal>
+    private lateinit var tempList : ArrayList<Ingredient>
+    private lateinit var list : ArrayList<Ingredient>
     private lateinit var bottomNav: BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         tempList = ArrayList()
         list = ArrayList()
-        setContentView(R.layout.activity_meal)
+        setContentView(R.layout.activity_ingredient)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(intent.getStringExtra("CategoryName"))
-        recyclerView = findViewById(R.id.recycler_view)
-        var itemDecoration = DividerItemDecoration(this@MealActivity, DividerItemDecoration.VERTICAL)
+        supportActionBar?.setTitle(intent.getStringExtra("strIngredient"))
+        recyclerView = findViewById(R.id.ingredient_recycler_view)
+        var itemDecoration = DividerItemDecoration(this@IngredientsActivity, DividerItemDecoration.VERTICAL)
         itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
         recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
         bottomNav = findViewById(R.id.navigationView)
-        BottomNav.getBottom(bottomNav,this@MealActivity)
-        val url = URL("https://www.themealdb.com/api/json/v1/1/filter.php?"+intent.getStringExtra("CategoryName"))
-        Log.d("URL", url.toString())
+        BottomNav.getBottom(bottomNav,this@IngredientsActivity)
+
+        val url = URL("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
+
         val request = Request.Builder()
             .url(url)
             .build()
@@ -63,12 +65,12 @@ class MealActivity : AppCompatActivity(){
                 Log.e("OKHTTP", e.localizedMessage)
                 runOnUiThread {
                     circularProgressIndicator.visibility = View.GONE
-                    MaterialAlertDialogBuilder(this@MealActivity)
+                    MaterialAlertDialogBuilder(this@IngredientsActivity)
                         .setTitle("Pas de réponse")
                         .setMessage("Vérifier votre connexion internet")
                         .setNeutralButton("OK") { dialog, which ->
-                            val newIntent = Intent(this@MealActivity, MealActivity::class.java)
-                            newIntent.putExtra("CategoryName",intent.getStringExtra("CategoryName"))
+                            val newIntent = Intent(this@IngredientsActivity, IngredientsActivity::class.java)
+                            newIntent.putExtra("IngredientName",intent.getStringExtra("strIngredient"))
 
                             startActivity(newIntent)
                         }
@@ -79,19 +81,18 @@ class MealActivity : AppCompatActivity(){
             override fun onResponse(call: Call, response: Response) {
                 response.body?.string()?.let {
                     val gson = Gson()
-                    val mealsResponse = gson.fromJson(it, MealRepository::class.java)
-                    mealsResponse.meals?.let { it1 -> tempList.addAll(it1) }
-                    mealsResponse.meals?.let { it1 -> list.addAll(it1) }
-                    mealsResponse.meals?.let { it1 ->
+                    val ingredientsResponse = gson.fromJson(it, IngredientJson::class.java)
+                    ingredientsResponse.ingredients?.let { it ->
                         runOnUiThread {
-                            mealsAdapter = MealsAdapter(it1)
-                            recyclerView.adapter = mealsAdapter
+                            var ingredientJson = ingredientsResponse.ingredients?.get(0)
+                            //var ingredient = gson.fromJson(ingredientJson, Ingredient::class.java)
+                            ingredientAdapter = IngredientAdapter(it as ArrayList<Ingredient>)
+                            recyclerView.adapter = ingredientAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                             circularProgressIndicator.visibility = View.GONE
+                            //Log.d("OKHTTP", "Got " + ingredient.idIngredient)
                         }
-
                     }
-                    Log.d("OKHTTP", "Got " + mealsResponse.meals?.count() + " results")
                 }
             }
         })
@@ -116,15 +117,15 @@ class MealActivity : AppCompatActivity(){
                     val filterPattern =
                         query.toString().toLowerCase(Locale.ITALIAN).trim { it <= ' ' }
                     for (item in list) {
-                        if (item.mealName?.toLowerCase(Locale.ITALIAN)?.contains(filterPattern) == true) {
+                        if (item.strIngredient?.toLowerCase(Locale.ITALIAN)?.contains(filterPattern) == true) {
                             tempList.add(item)
                         }
                     }
                 }
                 tempList?.let { it1 ->
                     runOnUiThread {
-                        mealsAdapter = MealsAdapter(it1)
-                        recyclerView.adapter = mealsAdapter
+                        ingredientAdapter = IngredientAdapter(it1)
+                        recyclerView.adapter = ingredientAdapter
                         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
                     }

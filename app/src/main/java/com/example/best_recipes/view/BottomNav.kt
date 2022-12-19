@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import com.example.best_recipes.R
 import com.example.best_recipes.controller.CategoryActivity
+import com.example.best_recipes.controller.IngredientsActivity
 import com.example.best_recipes.controller.RandomRecipeActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -22,7 +23,7 @@ class BottomNav {
                     }
                     R.id.ingredient_item -> {
                         Log.d("item", "random item selected")
-                        val intent = Intent(context, CategoryActivity::class.java)
+                        val intent = Intent(context, IngredientsActivity::class.java)
                         context.startActivity(intent)
                         return@setOnNavigationItemSelectedListener true
                     }

@@ -18,6 +18,10 @@
             android:name=".controller.RandomRecipeActivity"
             android:exported="false"
             android:parentActivityName=".controller.CategoryActivity"/>
+        <activity
+            android:name=".controller.IngredientsActivity"
+            android:exported="false"
+            android:parentActivityName=".controller.CategoryActivity"/>
 
         <activity
             android:name=".controller.RecipeActivity"
