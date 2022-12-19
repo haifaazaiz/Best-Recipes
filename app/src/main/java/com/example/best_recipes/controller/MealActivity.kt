@@ -40,7 +40,7 @@ class MealActivity : AppCompatActivity(){
         list = ArrayList()
         setContentView(R.layout.activity_meal)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(intent.getStringExtra("CategoryName"))
+        supportActionBar?.setTitle(intent.getStringExtra("CategoryName")?.substring(2)  )
         recyclerView = findViewById(R.id.recycler_view)
         var itemDecoration = DividerItemDecoration(this@MealActivity, DividerItemDecoration.VERTICAL)
         itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
