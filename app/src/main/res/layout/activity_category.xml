@@ -10,8 +10,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/category_recycler_view"
-        android:layout_width="419dp"
-        android:layout_height="681dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/navigationView"
         app:layout_constraintEnd_toEndOf="parent"
