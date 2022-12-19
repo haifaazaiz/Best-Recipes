@@ -15,6 +15,11 @@
         android:theme="@style/Theme.Best_recipes"
         tools:targetApi="31">
         <activity
+            android:name=".controller.AreaActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".controller.RandomRecipeActivity"
             android:exported="false"
             android:parentActivityName=".controller.CategoryActivity"/>
@@ -34,12 +39,12 @@
         <activity
             android:name=".controller.CategoryActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

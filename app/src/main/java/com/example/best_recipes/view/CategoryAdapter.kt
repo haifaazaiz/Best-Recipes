@@ -44,7 +44,7 @@ class CategoryAdapter( val categories: List<Category>): RecyclerView.Adapter<Cat
         holder.categoryItem.setOnClickListener {
             Log.d("click on", "clicked")
             val intent = Intent(holder.categoryView.context, MealActivity::class.java)
-            intent.putExtra("CategoryName", categories.get(position).nameCategory)
+            intent.putExtra("CategoryName", "c="+categories.get(position).nameCategory)
             var context = holder.categoryView.context
             context.startActivity(intent)
         }
