@@ -28,9 +28,7 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+
 class CategoryActivity : AppCompatActivity() {
 
 

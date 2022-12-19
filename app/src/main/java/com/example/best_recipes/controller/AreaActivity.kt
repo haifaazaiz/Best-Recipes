@@ -1,22 +1,22 @@
 package com.example.best_recipes.controller
+
+import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.R
-import com.example.best_recipes.modal.Category
-import com.example.best_recipes.modal.Meal
-import com.example.best_recipes.modal.MealRepository
+import com.example.best_recipes.modal.Area
+import com.example.best_recipes.modal.AreaRepository
+import com.example.best_recipes.view.AreaAdapter
 import com.example.best_recipes.view.BottomNav
-import com.example.best_recipes.view.CategoryAdapter
-import com.example.best_recipes.view.MealsAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -27,29 +27,33 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MealActivity : AppCompatActivity(){
+class AreaActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var mealsAdapter: MealsAdapter
+    private lateinit var areaAdapter: AreaAdapter
     private lateinit var circularProgressIndicator: CircularProgressIndicator
-    private lateinit var tempList : ArrayList<Meal>
-    private lateinit var list : ArrayList<Meal>
+    private lateinit var tempList : ArrayList<Area>
+    private lateinit var list : ArrayList<Area>
     private lateinit var bottomNav: BottomNavigationView
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tempList = ArrayList()
         list = ArrayList()
-        setContentView(R.layout.activity_meal)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(intent.getStringExtra("CategoryName"))
-        recyclerView = findViewById(R.id.recycler_view)
-        var itemDecoration = DividerItemDecoration(this@MealActivity, DividerItemDecoration.VERTICAL)
+        supportActionBar?.setTitle("Areas")
+        setContentView(R.layout.activity_area)
+        //categoroItem= findViewById(R.id.category_item)
+        recyclerView = findViewById(R.id.area_recycler_view)
+        var itemDecoration = DividerItemDecoration(this@AreaActivity, DividerItemDecoration.VERTICAL)
         itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
         recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
         bottomNav = findViewById(R.id.navigationView)
-        BottomNav.getBottom(bottomNav,this@MealActivity)
-        val url = URL("https://www.themealdb.com/api/json/v1/1/filter.php?"+intent.getStringExtra("CategoryName"))
+
+
+        BottomNav.getBottom(bottomNav,this@AreaActivity)
+        val url = URL("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
+
 
         val request = Request.Builder()
             .url(url)
@@ -57,44 +61,49 @@ class MealActivity : AppCompatActivity(){
 
         val client = OkHttpClient()
 
+
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("OKHTTP", e.localizedMessage)
+                Log.e("OKHTTP failure", e.localizedMessage)
                 runOnUiThread {
                     circularProgressIndicator.visibility = View.GONE
-                    MaterialAlertDialogBuilder(this@MealActivity)
+                    MaterialAlertDialogBuilder(this@AreaActivity)
                         .setTitle("Pas de réponse")
                         .setMessage("Vérifier votre connexion internet")
                         .setNeutralButton("OK") { dialog, which ->
-                            val newIntent = Intent(this@MealActivity, MealActivity::class.java)
-                            newIntent.putExtra("CategoryName",intent.getStringExtra("CategoryName"))
-
-                            startActivity(newIntent)
+                            val intent = Intent(this@AreaActivity, AreaActivity::class.java)
+                            startActivity(intent)
                         }
                         .show()
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
+
                 response.body?.string()?.let {
                     val gson = Gson()
-                    val mealsResponse = gson.fromJson(it, MealRepository::class.java)
-                    mealsResponse.meals?.let { it1 -> tempList.addAll(it1) }
-                    mealsResponse.meals?.let { it1 -> list.addAll(it1) }
-                    mealsResponse.meals?.let { it1 ->
+                    val areas = gson.fromJson(it, AreaRepository::class.java)
+                    areas.areas?.let { it1 -> tempList.addAll(it1) }
+                    areas.areas?.let { it1 -> list.addAll(it1) }
+                    areas.areas?.let { it1 ->
                         runOnUiThread {
-                            mealsAdapter = MealsAdapter(it1)
-                            recyclerView.adapter = mealsAdapter
+                            val intent = Intent(applicationContext, MealActivity::class.java)
+                            areaAdapter = AreaAdapter(it1)
+                            recyclerView.adapter = areaAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                             circularProgressIndicator.visibility = View.GONE
-                        }
 
+                        }
                     }
-                    Log.d("OKHTTP", "Got " + mealsResponse.meals?.count() + " results")
+
+                    Log.d("OKHTTP", "Got " + areas.areas?.count() + " results")
                 }
             }
+
         })
+
+
 
     }
 
@@ -116,15 +125,15 @@ class MealActivity : AppCompatActivity(){
                     val filterPattern =
                         query.toString().toLowerCase(Locale.ITALIAN).trim { it <= ' ' }
                     for (item in list) {
-                        if (item.mealName?.toLowerCase(Locale.ITALIAN)?.contains(filterPattern) == true) {
+                        if (item.nameArea?.toLowerCase(Locale.ITALIAN)?.contains(filterPattern) == true) {
                             tempList.add(item)
                         }
                     }
                 }
                 tempList?.let { it1 ->
                     runOnUiThread {
-                        mealsAdapter = MealsAdapter(it1)
-                        recyclerView.adapter = mealsAdapter
+                        areaAdapter = AreaAdapter(it1)
+                        recyclerView.adapter = areaAdapter
                         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
                     }
