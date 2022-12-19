@@ -1,33 +1,62 @@
 package com.example.best_recipes.controller
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.best_recipes.databinding.ActivityMainBinding
+import com.example.best_recipes.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
+
 
 class MainActivity : AppCompatActivity() {
 
-    //private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
+    //private lateinit var binding: ActivityMainBinding
+    lateinit var bottomNav : BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        Log.d("loaded","fragment.toString()")
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        //setSupportActionBar(binding.toolbar)
+        bottomNav = findViewById(R.id.navigationView)
 
 
-        binding.fab.setOnClickListener {
-           /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()*/
-            val intent = Intent(applicationContext, CategoryActivity::class.java)
-            intent.putExtra("key", "value")
-            startActivity(intent)
+        bottomNav.setOnNavigationItemSelectedListener {
+            Log.d("itemclick",it.itemId.toString())
+             when (it.itemId) {
+                R.id.category_item -> {
+
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.ingredient_item -> {
+
+                    return@setOnNavigationItemSelectedListener true
+                }
+                 R.id.area_item -> {
+                     Log.d("item","random item selected")
+
+                     return@setOnNavigationItemSelectedListener true
+                 }
+                R.id.random_recipe_item -> {
+                    Log.d("item","random item selected")
+
+                    return@setOnNavigationItemSelectedListener true
+                }
+
+
+             }
+            false
+
         }
-    }
 
+
+    }
+    private  fun loadFragment(fragment: Fragment){
+        Log.d("load",fragment.toString())
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container,fragment)
+        Log.d("load",fragment.javaClass.toString())
+        transaction.commit()
+    }
     /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)

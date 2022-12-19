@@ -1,12 +1,13 @@
 package com.example.best_recipes.controller
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.example.best_recipes.R
 import com.example.best_recipes.modal.Recipe
 import com.example.best_recipes.modal.RecipeJson
@@ -20,7 +21,7 @@ import okhttp3.*
 import java.io.IOException
 import java.net.URL
 
-class RecipeActivity : AppCompatActivity(){
+class RandomRecipeActivity : AppCompatActivity(){
     private lateinit var ingredient_textview : TextView
     private lateinit var tags_textview : TextView
     private lateinit var  instruction_textview : TextView
@@ -28,10 +29,11 @@ class RecipeActivity : AppCompatActivity(){
     private lateinit var  image_view : ImageView
     private lateinit var circularProgressIndicator: CircularProgressIndicator
     private lateinit var bottomNav: BottomNavigationView
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
-        supportActionBar?.setTitle(intent.getStringExtra("recipeName"))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         ingredient_textview = findViewById(R.id.ingredient_textview)
         tags_textview = findViewById(R.id.tags_textview)
@@ -40,30 +42,29 @@ class RecipeActivity : AppCompatActivity(){
         image_view = findViewById(R.id.imagerecipe)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
-        bottomNav=findViewById(R.id.navigationView)
-        BottomNav.getBottom(bottomNav,this@RecipeActivity)
-        val url = URL("https://www.themealdb.com/api/json/v1/1/lookup.php?i="+intent.getStringExtra("mealId"))
-        Log.d("url", url.toString())
+        bottomNav = findViewById(R.id.navigationView)
+
+
+        BottomNav.getBottom(bottomNav,this@RandomRecipeActivity)
+        val url = URL("https://www.themealdb.com/api/json/v1/1/random.php")
+
         val request = Request.Builder()
             .url(url)
             .build()
 
         val client = OkHttpClient()
-
+        Log.d("url", url.toString())
         client.newCall(request).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("OKHTTP", e.localizedMessage)
+                Log.e("OKHTTP random recipe", e.localizedMessage)
                 runOnUiThread {
                     circularProgressIndicator.visibility = View.GONE
-                    MaterialAlertDialogBuilder(this@RecipeActivity)
+                    MaterialAlertDialogBuilder(this@RandomRecipeActivity)
                         .setTitle("Pas de réponse")
                         .setMessage("Vérifier votre connexion internet")
                         .setNeutralButton("OK") { dialog, which ->
-                            val newIntent = Intent(this@RecipeActivity, RecipeActivity::class.java)
-                            newIntent.putExtra("mealId", intent.getStringExtra("mealId"))
-                            newIntent.putExtra("recipeName",intent.getStringExtra("recipeName"))
-
+                            val newIntent = Intent(this@RandomRecipeActivity, RandomRecipeActivity::class.java)
                             startActivity(newIntent)                        }
                         .show()
                 }
@@ -78,7 +79,7 @@ class RecipeActivity : AppCompatActivity(){
                         circularProgressIndicator.visibility = View.GONE
                         var recipeJson = recipeResponse.meals?.get(0)
                         var recipe = gson.fromJson(recipeJson, Recipe::class.java)
-
+                        supportActionBar?.setTitle(recipe.strMeal)
                         if(recipe.strIngredient1!="")
                             ingredients = ingredients + recipe.strIngredient1 + "  :  " + recipe.strMeasure1 +"\n"
                         if(recipe.strIngredient2!="")

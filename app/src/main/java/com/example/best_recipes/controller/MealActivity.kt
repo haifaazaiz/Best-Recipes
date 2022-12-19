@@ -14,8 +14,10 @@ import com.example.best_recipes.R
 import com.example.best_recipes.modal.Category
 import com.example.best_recipes.modal.Meal
 import com.example.best_recipes.modal.MealRepository
+import com.example.best_recipes.view.BottomNav
 import com.example.best_recipes.view.CategoryAdapter
 import com.example.best_recipes.view.MealsAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.gson.Gson
@@ -31,6 +33,7 @@ class MealActivity : AppCompatActivity(){
     private lateinit var circularProgressIndicator: CircularProgressIndicator
     private lateinit var tempList : ArrayList<Meal>
     private lateinit var list : ArrayList<Meal>
+    private lateinit var bottomNav: BottomNavigationView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tempList = ArrayList()
@@ -44,7 +47,8 @@ class MealActivity : AppCompatActivity(){
         recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
-
+        bottomNav = findViewById(R.id.navigationView)
+        BottomNav.getBottom(bottomNav,this@MealActivity)
         val url = URL("https://www.themealdb.com/api/json/v1/1/filter.php?c="+intent.getStringExtra("CategoryName"))
 
         val request = Request.Builder()

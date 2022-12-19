@@ -1,6 +1,6 @@
 package com.example.best_recipes.controller
 
-import android.app.DownloadManager.Query
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,22 +8,19 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
-import android.widget.Filter
 import android.widget.SearchView
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.best_recipes.modal.CategoryRepository
 import com.example.best_recipes.R
 import com.example.best_recipes.modal.Category
+import com.example.best_recipes.view.BottomNav
 import com.example.best_recipes.view.CategoryAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -42,7 +39,8 @@ class CategoryActivity : AppCompatActivity() {
     private lateinit var circularProgressIndicator: CircularProgressIndicator
     private lateinit var tempList : ArrayList<Category>
     private lateinit var list : ArrayList<Category>
-
+    private lateinit var bottomNav: BottomNavigationView
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tempList = ArrayList()
@@ -56,6 +54,10 @@ class CategoryActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
+         bottomNav = findViewById(R.id.navigationView)
+
+
+        BottomNav.getBottom(bottomNav,this@CategoryActivity)
         val url = URL("https://www.themealdb.com/api/json/v1/1/categories.php")
 
         val request = Request.Builder()
