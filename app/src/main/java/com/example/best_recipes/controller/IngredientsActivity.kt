@@ -49,6 +49,7 @@ class IngredientsActivity : AppCompatActivity() {
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
         bottomNav = findViewById(R.id.navigationView)
+        bottomNav.selectedItemId=R.id.ingredient_item
         BottomNav.getBottom(bottomNav,this@IngredientsActivity)
 
         val url = URL("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
