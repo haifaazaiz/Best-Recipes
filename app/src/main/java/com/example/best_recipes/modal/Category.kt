@@ -9,6 +9,7 @@ class Category {
     var urlPictureCategory: String? = null
     @SerializedName("strCategoryDescription")
     var descriptionCategory: String? = null
+    var checkBox: Boolean?=null
 
 }
 

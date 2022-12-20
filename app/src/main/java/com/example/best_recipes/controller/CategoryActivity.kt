@@ -52,7 +52,7 @@ class CategoryActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(itemDecoration)
         circularProgressIndicator= findViewById(R.id.progress_circulair)
         circularProgressIndicator.visibility= View.VISIBLE
-         bottomNav = findViewById(R.id.navigationView)
+        bottomNav = findViewById(R.id.navigationView)
         bottomNav.selectedItemId=R.id.category_item
 
         BottomNav.getBottom(bottomNav,this@CategoryActivity)
@@ -92,7 +92,7 @@ class CategoryActivity : AppCompatActivity() {
                     categories.categories?.let { it1 ->
                         runOnUiThread {
                             val intent = Intent(applicationContext, MealActivity::class.java)
-                            categoryAdapter = CategoryAdapter(it1)
+                            categoryAdapter = CategoryAdapter(context = this@CategoryActivity,it1)
                             recyclerView.adapter = categoryAdapter
                             recyclerView.layoutManager = LinearLayoutManager(applicationContext)
                             circularProgressIndicator.visibility = View.GONE
@@ -135,15 +135,15 @@ class CategoryActivity : AppCompatActivity() {
                 }
                 tempList?.let { it1 ->
                     runOnUiThread {
-                        categoryAdapter = CategoryAdapter(it1)
+                        categoryAdapter = CategoryAdapter(context = this@CategoryActivity,it1)
                         recyclerView.adapter = categoryAdapter
                         recyclerView.layoutManager = LinearLayoutManager(applicationContext)
 
                     }
                 }
-            return true
-        }
-    })
+                return true
+            }
+        })
         return super.onCreateOptionsMenu(menu)
-}
+    }
 }
