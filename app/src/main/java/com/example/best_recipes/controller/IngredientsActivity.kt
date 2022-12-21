@@ -82,6 +82,8 @@ class IngredientsActivity : AppCompatActivity() {
                 response.body?.string()?.let {
                     val gson = Gson()
                     val ingredientsResponse = gson.fromJson(it, IngredientJson::class.java)
+                    ingredientsResponse.ingredients?.let { it1 -> tempList.addAll(it1) }
+                    ingredientsResponse.ingredients?.let { it1 -> list.addAll(it1) }
                     ingredientsResponse.ingredients?.let { it ->
                         runOnUiThread {
                             var ingredientJson = ingredientsResponse.ingredients?.get(0)
