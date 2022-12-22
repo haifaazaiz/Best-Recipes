@@ -9,4 +9,4 @@
 - Afficher une recette aléatoire.
 - Faire le filtrage des plats moyennant les ingrédients.
 - Faire le filtrage des plats moyennant l'origine(l'area) de chaque recette.
-- Gestion des favoris
+- Gestion des recettes en favori.
