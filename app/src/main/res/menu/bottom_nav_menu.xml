@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Categories"
+        android:icon="@drawable/meal"
+        android:id="@+id/category_item"/>
+    <item android:title="Area"
+        android:icon="@drawable/ic_country_24"
+        android:id="@+id/area_item"/>
+    <item android:title="Ingredients"
+        android:icon="@drawable/ingredient"
+        android:id="@+id/ingredient_item"/>
+    <item android:title="Random_recipe"
+        android:icon="@drawable/random"
+        android:id="@+id/random_recipe_item"/>
+</menu>
