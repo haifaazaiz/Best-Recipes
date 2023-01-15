@@ -7,17 +7,17 @@ On a fait une branche develop et à chaque ajout d'une fonctionalité on utilise
   * git flow feature finish nom_feature 
 # Les Fonctionnalités développées
 Le projet contient 6 activities : 
-CategoryActivity
+* CategoryActivity
   - Affichage de la liste de catégories de recette obtenu par appel de l'api.
-MealActivity 
+* MealActivity 
   - En cliquant sur une catégorie, afficher la liste de ses plats. 
-RecipeActivity
+* RecipeActivity
   - Affichage des détails de chaque plat en cliquant sur une recette.
-RandomRecipeActivity
+* RandomRecipeActivity
   - Afficher une recette aléatoire.
-IngredientsActivity 
+* IngredientsActivity 
   - Faire le filtrage des plats moyennant les ingrédients.
-AreaActivity 
+* AreaActivity 
   - Faire le filtrage des plats moyennant l'origine(l'area) de chaque recette.
 
 On a développé aussi les fonctionalités suivantes:
