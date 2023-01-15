@@ -8,7 +8,7 @@ On a fait une branche develop et à chaque ajout d'une fonctionalité on utilise
 # Les Fonctionnalités développées
 Le projet contient 6 activities : 
 * CategoryActivity
-  - Affichage de la liste de catégories de recette obtenu par appel de l'api.
+  - Affichage de la liste des catégories de recette obtenu par appel de l'api.
 * MealActivity 
   - En cliquant sur une catégorie, afficher la liste de ses plats. 
 * RecipeActivity
@@ -16,10 +16,12 @@ Le projet contient 6 activities :
 * RandomRecipeActivity
   - Afficher une recette aléatoire.
 * IngredientsActivity 
+  - Affichage de la liste des ingrédients obtenu par appel de l'api.
   - Faire le filtrage des plats moyennant les ingrédients.
 * AreaActivity 
+  - Affichage de la liste des Area obtenu par appel de l'api.
   - Faire le filtrage des plats moyennant l'origine(l'area) de chaque recette.
 
 On a développé aussi les fonctionalités suivantes:
   - La barre de recherche pour faciliter la recherche d'une catégorie.
-  - Gestion des recettes en favori.
+  - Gestion des recettes en favori en utilisant Shared Preferences.
